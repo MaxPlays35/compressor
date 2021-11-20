@@ -32,11 +32,11 @@ class ShannonEncoding:
 
     def get_alphabet(self):
         counted_letters = collections.Counter(self._text)
-        lenght = len(self._text)
+        length = len(self._text)
         probabilities = {}
         for (key, value) in counted_letters.most_common():
             probabilities.update({
-                key: value / lenght
+                key: value / length
             })
         probabilities = sorted(probabilities.items(), key=lambda item: item[1], reverse=True)
         encoded_letters = []
@@ -145,9 +145,14 @@ class ShannonDecoding:
         codes = {code: letter for letter, code in alphabet.items()}
 
         current_code = ''
+        counter = 0
         for chunk in self.chunks(data_length):
             for char in chunk:
                 current_code += char
+                counter += 1
                 if current_code in codes.keys():
                     self._file_out.write(codes[current_code])
                     current_code = ''
+
+                    if self._progress_callback is not None and counter % 20 == 0:
+                        self._progress_callback(data_length, counter)

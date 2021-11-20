@@ -21,6 +21,8 @@ class MainWidget(QtWidgets.QWidget):
 
         self.encode_btn = QPushButton('Encode')
         self.decode_btn = QPushButton('Decode')
+        self.encode_btn.setStyleSheet(btn_style)
+        self.decode_btn.setStyleSheet(btn_style)
 
         self.encode_btn.clicked.connect(self.encode)
         self.decode_btn.clicked.connect(self.decode)
@@ -64,14 +66,32 @@ class MainWidget(QtWidgets.QWidget):
         if not self.out_path:
             return
 
-        with open(path, 'r', encoding='utf-8') as in_file:
-            with open(self.out_path, 'wb') as out_file:
-                CaesarEncryptor(in_file, out_file, self.progress_callback).write()
+        with open(path, 'r', encoding='utf-8', newline='\n') as file_in:
+            with open(self.out_path, 'wb') as file_out:
+                CaesarEncryptor(file_in, file_out, self.progress_callback).write()
+        self.on_finish('OK')
 
 
 
     def decode(self):
-        pass
+        dialog = QFileDialog()
+        path = dialog.getOpenFileName(self, 'Select a file to uncompress', filter='Pum rar (*.prar)')[0]
+
+        if not path:
+            return
+
+        filename = os.path.basename(path).replace('.prar', '')
+
+        self.out_path = dialog.getSaveFileName(self, 'Select where to save file', os.path.join('./out', filename))[0]
+
+        if not self.out_path:
+            return
+
+        with open(path, 'rb') as file_in:
+            with open(self.out_path, 'w', encoding='utf-8', newline='\n') as file_out:
+                CaesarDecryptor(file_in, file_out, self.progress_callback).read()
+        self.on_finish('OK')
+
 
     def on_progress(self, total, processed):
         if self.progress_bar.maximum() != total:
