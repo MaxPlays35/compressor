@@ -1,9 +1,11 @@
 import os
 import subprocess
 import sys
+
 from PySide6 import QtCore, QtWidgets
 from PySide6.QtWidgets import QProgressBar, QVBoxLayout, QPushButton, QFileDialog, QApplication, QCheckBox, QSpinBox, \
     QMessageBox
+
 from coders.caesar import CaesarEncryptor, CaesarDecryptor
 
 
@@ -50,8 +52,6 @@ class MainWidget(QtWidgets.QWidget):
         self.layout.addWidget(self.progress_bar)
         self.layout.addStretch()
 
-
-
     def encode(self):
         dialog = QFileDialog()
         path = dialog.getOpenFileName(self, 'Select a file to compress', filter='Text file (*.txt)')[0]
@@ -71,8 +71,6 @@ class MainWidget(QtWidgets.QWidget):
                 CaesarEncryptor(file_in, file_out, self.progress_callback).write()
         self.on_finish('OK')
 
-
-
     def decode(self):
         dialog = QFileDialog()
         path = dialog.getOpenFileName(self, 'Select a file to uncompress', filter='Pum rar (*.prar)')[0]
@@ -91,7 +89,6 @@ class MainWidget(QtWidgets.QWidget):
             with open(self.out_path, 'w', encoding='utf-8', newline='\n') as file_out:
                 CaesarDecryptor(file_in, file_out, self.progress_callback).read()
         self.on_finish('OK')
-
 
     def on_progress(self, total, processed):
         if self.progress_bar.maximum() != total:
@@ -114,6 +111,7 @@ class MainWidget(QtWidgets.QWidget):
 
     def draw_progress_bar_checked(self, event):
         self.progress_callback = self.on_progress if self.draw_progress_bar_checkbox.isChecked() else None
+
 
 if __name__ == "__main__":
     if not os.path.exists('out'):

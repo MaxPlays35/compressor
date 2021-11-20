@@ -1,4 +1,5 @@
 import typing
+
 from coders import shannon
 
 
@@ -9,7 +10,7 @@ class CaesarEncryptor(shannon.ShannonEncoding):
 
     def write_symbol(self, symbol: str):
         self.write_int((ord(symbol) + self._key), self._symbol_length)
-    
+
     def write(self):
         super(CaesarEncryptor, self).write()
 
@@ -24,7 +25,6 @@ class CaesarDecryptor(shannon.ShannonDecoding):
         if idx < 0:
             idx += 255
         return super(CaesarDecryptor, self).get_char(idx)
-    
+
     def read(self):
         super(CaesarDecryptor, self).read()
-
