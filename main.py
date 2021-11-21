@@ -1,5 +1,6 @@
 from coders.shannon import ShannonEncoding, ShannonDecoding
 
+
 with open('texts\\oblomov.txt', 'r', encoding='utf-8', newline='\n') as file:
     with open('output.prar', 'wb') as out:
         a = ShannonEncoding(file, out, None)

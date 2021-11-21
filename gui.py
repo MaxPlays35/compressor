@@ -113,7 +113,7 @@ class MainWidget(QtWidgets.QWidget):
         self.progress_callback = self.on_progress if self.draw_progress_bar_checkbox.isChecked() else None
 
 
-if __name__ == "__main__":
+def main():
     if not os.path.exists('out'):
         os.makedirs('out')
 
